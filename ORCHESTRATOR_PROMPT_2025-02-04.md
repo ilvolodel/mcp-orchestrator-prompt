@@ -1493,11 +1493,9 @@ result = calendar_create_meeting_hybrid(
 
 **5. teams_list_messages(session_token, chat_id, max_results?)**
 - Read messages from specific chat (conversation history)
-- **chat_id**: GET IT FROM teams_list_chats - NEVER ask user!
 - max_results: 1-50 (default 50)
 - Returns: `{messages: [{id, createdDateTime, body, from, attachments}], count}`
 - **Ordered:** Newest → Oldest
-- **YOU MUST**: When user says "read messages from Mario" → Call teams_list_chats(st) to find Mario's chat_id → Then call teams_list_messages(st, chat_id)
 
 **6. teams_list_teams(session_token)**
 - List all Teams you're member of
@@ -1513,19 +1511,6 @@ result = calendar_create_meeting_hybrid(
 - Returns: `{success: true, message_id: "..."}`
 
 ### Critical Notes
-
-**⚠️ READING MESSAGES - MANDATORY WORKFLOW:**
-```
-User: "Read messages from Daniele"
-
-YOU MUST DO (2 steps):
-1. teams_list_chats(st) → Find "Daniele Castellari" → Extract chat_id
-2. teams_list_messages(st, chat_id, 50) → Read messages
-
-NEVER EVER SAY: "Give me the chat_id" or "I need the chat_id"
-YOU GET THE chat_id YOURSELF FROM teams_list_chats!
-```
-
 - **Auto-resolves names**: NO users_search needed! "Mario Rossi" works in send_message AND create_chat!
 - **User provides ONLY names/emails**: Agent resolves name → chat_id internally via teams_list_chats
 - **chat_id is INTERNAL**: Users NEVER see or provide chat_id - agent retrieves it automatically
