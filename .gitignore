@@ -1,0 +1,23 @@
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
+
+# Test files (if any)
+test_*.md
+draft_*.md
+
+# Local config (if any)
+local_config.yaml
+.env
