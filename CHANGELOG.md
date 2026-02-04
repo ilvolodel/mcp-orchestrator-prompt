@@ -5,6 +5,62 @@ All notable changes to the MCP Orchestrator Prompt will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2025-02-04 (Update 2)
+
+### Fixed - Critical Agent Behavior
+
+**Problem:** Agent was asking users for chat_id instead of using it directly
+- Example: "Give me the chat_id and I'll read messages: 19:abc..."
+- Users don't know technical IDs - only names!
+
+**Solution:** Added explicit rules and examples
+
+### Added
+
+- **🔑 CRITICAL RULE section** - "Technical IDs are INTERNAL ONLY"
+  - Users NEVER provide: chat_id, message_id, file_id, event_id
+  - Users ONLY provide: names, emails, natural descriptions
+  - Clear workflow example for "Read messages from Daniele"
+
+- **❌ Pattern 7** - "Asking for data you already have"
+  - Explicit anti-pattern showing WRONG behavior
+  - Example: Agent gets chat_id from teams_list_chats but asks user for it
+
+- **Enhanced DO NOT section:**
+  - "❌ Ask user for data YOU ALREADY HAVE (chat_id, file_id, email, etc.)"
+  - "❌ Say 'give me the chat_id' when you got it from teams_list_chats!"
+
+- **✅ DO example** - "Use data you already retrieved"
+  - Shows complete workflow from user request to result
+  - Demonstrates filtering messages by date
+
+### Changed
+
+- **teams_send_message documentation**
+  - Before: "recipient: 'Mario Rossi' or email or chat_id"
+  - After: "recipient: 'Mario Rossi' or email (auto-resolves name → chat!)"
+  - Added: "**NEVER ask user for chat_id**"
+
+- **Critical Notes section (MS365-Teams)**
+  - Removed misleading "3 send modes: by name, by email, by chat_id"
+  - Replaced with: "User provides ONLY names/emails"
+  - Added: "chat_id is INTERNAL: Users NEVER see or provide chat_id"
+  - Added explicit workflow: "User says name → teams_list_chats → chat_id → teams_list_messages"
+
+### Impact
+
+**Before this fix:**
+```
+User: "Read messages from Daniele"
+Agent: [finds chat] "Give me this chat_id: 19:abc..." ❌
+```
+
+**After this fix:**
+```
+User: "Read messages from Daniele"
+Agent: [finds chat_id] [reads messages] "Daniele's messages: [...]" ✅
+```
+
 ## [1.1.0] - 2025-02-04
 
 ### Added - MS365-Teams
